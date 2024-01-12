@@ -1,0 +1,5 @@
+const MAX_ALTERNATIVES = 3
+
+export {
+    MAX_ALTERNATIVES,
+}
