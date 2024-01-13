@@ -3,40 +3,28 @@ import { LEARNING_MODES } from '@/consts/learning-modes'
 
 const STUDY_PLANS = {
   NEW_MATERIAL: [
-    LEARNING_MODES.ACQUAINTANCE, // linear
     LEARNING_MODES.ACQUAINTANCE,
-
-    LEARNING_MODES.DICTATION, // linear
-
-    LEARNING_MODES.TRANSLATION, // iterational
-    LEARNING_MODES.SPEAKING, // iterational
-
-    LEARNING_MODES.TRANSLATION, 
-    LEARNING_MODES.SPEAKING_AND_TRANSLATION, // iterational
+    LEARNING_MODES.DICTATION_LIGHT,
+    LEARNING_MODES.TRANSLATION,
+    LEARNING_MODES.SPEAKING_LIGHT,
+    LEARNING_MODES.TRANSLATION_LIGHT, 
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   YESTERDAY: [
-    LEARNING_MODES.ACQUAINTANCE,
-
-    LEARNING_MODES.TRANSLATION,
-    LEARNING_MODES.SPEAKING,
-
     LEARNING_MODES.TRANSLATION,
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   REFRESH1: [
-    LEARNING_MODES.TRANSLATION,
-    LEARNING_MODES.SPEAKING,
-
-    LEARNING_MODES.TRANSLATION,
+    LEARNING_MODES.TRANSLATION_LIGHT,
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   REFRESH2: [
-    LEARNING_MODES.TRANSLATION,
-    LEARNING_MODES.SPEAKING_AND_TRANSLATION,
+    LEARNING_MODES.TRANSLATION_LIGHT,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
   ],
   REFRESH3: [
-    LEARNING_MODES.TRANSLATION,
-    LEARNING_MODES.SPEAKING_AND_TRANSLATION,
+    LEARNING_MODES.TRANSLATION_LIGHT,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
   ]
 }
 
@@ -68,9 +56,13 @@ export const generatePlan = (langData: Record<string, string>[][]) => {
   const result: TStudyPlan[] = []
   const studyPlansArray = Object.values(STUDY_PLANS)
 
+  if (!(Array.isArray(langData) && langData.length)) {
+    return result
+  }
+
   langData.forEach((assignments, index) => {
     studyPlansArray[index].forEach(mode => {
-      if (mode === LEARNING_MODES.ACQUAINTANCE || mode === LEARNING_MODES.DICTATION) {
+      if (mode.includes('light')) {
         result.push(...assignments.map(assignment => ({
           assignment,
           mode,

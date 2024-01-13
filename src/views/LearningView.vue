@@ -47,7 +47,7 @@ function createStudyPlan() {
   const startIndex = (currentDay.value - 5 >= 0)
   ? currentDay.value - 5
   : 0
-  const endIndex = currentDay.value + 1
+  const endIndex = currentDay.value
 
   const currentDayData = currentLangData.slice(startIndex, endIndex)
  

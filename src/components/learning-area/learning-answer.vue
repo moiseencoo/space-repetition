@@ -134,6 +134,7 @@ watch(() => props.correctAnswer, () => {
 <template>
 	<div class="learning-answer">
 		<div class="learning-answer-top">
+      <button class="next-button" @click="emit('solved')">✅</button>
 			<div class="input-indicator" :class="completionStatus"></div>
 			<textarea
         class="learning-answer-textarea"
@@ -214,6 +215,16 @@ watch(() => props.correctAnswer, () => {
 	display: flex;
 	width: 100%;
   padding-top: 20px;
+  position: relative;
+}
+
+.next-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .learning-answer-textarea {

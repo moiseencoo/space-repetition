@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { LEARNING_MODES } from '@/consts/learning-modes'
 import speaker from '@/assets/volume-up.png'
 import flıp from '@/assets/flıp.png'
+import { Module } from 'module';
 
 const props = defineProps({
   assignment: { type: String, required: true },
@@ -21,6 +22,41 @@ const progressStyle = computed(() => {
 		to right,
 		var(--app-color-accent-cold) ${props.progressPercent}%,
 		rgba(240, 161, 119, 0.5) ${props.progressPercent}% ${percentRemains}%)`
+})
+
+const learningModeName = computed(() => {
+  switch(props.mode) {
+    case LEARNING_MODES.ACQUAINTANCE:
+      return 'ACQUAINTANCE (full)'
+    case LEARNING_MODES.ACQUAINTANCE_LIGHT:
+      return 'ACQUAINTANCE'
+    case LEARNING_MODES.DICTATION:
+      return 'DICTATION (full)'
+    case LEARNING_MODES.DICTATION_LIGHT:
+      return 'DICTATION'
+    case LEARNING_MODES.TRANSLATION:
+      return 'TRANSLATION (full)'
+    case LEARNING_MODES.TRANSLATION_LIGHT:
+      return 'TRANSLATION'
+    case LEARNING_MODES.SPEAKING:
+      return 'SPEAKING (full)'
+    case LEARNING_MODES.SPEAKING_LIGHT:
+      return 'SPEAKING'
+    case LEARNING_MODES.SPEAKING_AND_TRANSLATION:
+      return 'SPEAKING_AND_TRANSLATION (full)'
+    case LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT:
+      return 'SPEAKING_AND_TRANSLATION'
+    default:
+      return ''
+  }
+})
+
+const showAnswerWithAssignment = computed(() => {
+  const { mode } = props
+  return mode === LEARNING_MODES.ACQUAINTANCE
+    || mode === LEARNING_MODES.ACQUAINTANCE_LIGHT
+    || mode === LEARNING_MODES.SPEAKING
+    || mode === LEARNING_MODES.SPEAKING_LIGHT
 })
 
 function checkForSpeaking() {
@@ -43,22 +79,11 @@ onMounted(() => {
 <template>
 	<div class="learning-assignment">
     <div class="learning-mode">
-      <label for="modeAcquaintance">
-        <input id="modeAcquaintance" type="checkbox" checked="false"> Ознакомление
-      </label>
-      <label for="modeDictation">
-        <input id="modeDictation" type="checkbox" checked="false"> На слух
-      </label>
-      <label for="modeTranslation">
-        <input id="modeTranslation" type="checkbox" checked="false"> Перевод
-      </label>
-      <label for="modeSpeaking">
-        <input id="modeSpeaking" type="checkbox" checked="false"> Говорение
-      </label>
+      {{  learningModeName  }}
     </div>
 		<h2 class="learning-assignment-value">
       {{ showAnswer ? answer : assignment }}
-      <span v-if="mode === LEARNING_MODES.ACQUAINTANCE" class="answer">
+      <span v-if="showAnswerWithAssignment" class="answer">
         {{  answer }}
       </span>
 		</h2>
