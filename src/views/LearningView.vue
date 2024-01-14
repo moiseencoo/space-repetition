@@ -32,6 +32,7 @@ const currentAssignment = computed((): TStudyPlan | null => {
 })
 
 function handleChangeDay(day: number) {
+  console.log("🚀 ~ handleChangeDay ~ day:", day)
   store.changeDay(day)
   currentAssignmentNumber.value = 0
   createStudyPlan()
@@ -47,8 +48,8 @@ function handleSolvedAssignment() {
 }
 
 function createStudyPlan() {
-  const startIndex = (currentDay.value - 5 >= 0)
-  ? currentDay.value - 5
+  const startIndex = (currentDay.value - 4 >= 0)
+  ? currentDay.value - 4
   : 0
   const endIndex = currentDay.value + 1
 
