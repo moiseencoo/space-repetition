@@ -35,7 +35,7 @@ export const getModeIterations = ({
 }) => {
   const formattedPlan = [
     ...studyPlan,
-    ...studyPlan.slice(0, iterationPeriod)
+    ...studyPlan.slice(0, iterationPeriod - 1)
   ].map(assignment => ({
     assignment,
     mode,

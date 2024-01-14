@@ -14,7 +14,6 @@ import type { TStudyPlan } from '@/types/assignments'
 const store = useStore()
 
 import { ref, computed, onMounted } from 'vue'
-import { LEARNING_MODES } from '@/consts/learning-modes'
 
 const studyPlan = ref<TStudyPlan[]>([])
 const currentLangData = turkishData
@@ -32,14 +31,18 @@ const currentAssignment = computed((): TStudyPlan | null => {
   return studyPlan.value[currentAssignmentNumber.value]
 })
 
+function handleChangeDay(day: number) {
+  store.changeDay(day)
+  currentAssignmentNumber.value = 0
+  createStudyPlan()
+}
+
 function handleSolvedAssignment() {
   const numberOfTodaysAssignments = studyPlan.value.length - 1
   if (currentAssignmentNumber.value < numberOfTodaysAssignments) {
     currentAssignmentNumber.value++
   } else {
-    store.changeDay(currentDay.value + 1)
-    currentAssignmentNumber.value = 0
-    createStudyPlan()
+    handleChangeDay(currentDay.value + 1)
   }
 }
 
@@ -47,7 +50,7 @@ function createStudyPlan() {
   const startIndex = (currentDay.value - 5 >= 0)
   ? currentDay.value - 5
   : 0
-  const endIndex = currentDay.value
+  const endIndex = currentDay.value + 1
 
   const currentDayData = currentLangData.slice(startIndex, endIndex)
  
@@ -62,7 +65,7 @@ function createStudyPlan() {
 onMounted(() => {
   if (!store.currentLangLocalStorageData || isObjectEmpty(store.currentLangLocalStorageData)) {
     store.updateLocalStorage({
-      currentDay: 1,
+      currentDay: 0,
       maxUnclockedDays: 1,
     })
   } else {
@@ -81,6 +84,7 @@ onMounted(() => {
       :totalDays="totalDays" 
       :currentDay="store.currentDay + 1" 
       :maxUnlockedDay="store.maxUnclockedDays"
+      @changeDay="handleChangeDay"
     />
     <LearningArea 
       v-if="currentAssignment"

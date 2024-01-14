@@ -5,18 +5,21 @@ defineProps({
 	maxUnlockedDay: { type: Number, required: true },
 })
 
+const emit = defineEmits(['changeDay'])
+
 </script>
 
 <template>
   <div v-if="totalDays" class="day-progress">
 		<div 
-			v-for="day in totalDays"
+			v-for="(day, index) in totalDays"
 			:key="`day_${day}`"
 			:class="[
 				'day',
 				{ 'active': day === currentDay },
 				{ 'locked': day > maxUnlockedDay },
 			]"
+      @click="emit('changeDay', index)"
 		>
 			{{ day }}
 		</div>

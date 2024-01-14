@@ -100,8 +100,6 @@ function createSpeechRecognition(language = 'fr-CA') {
 function checkCorrectness() {
 	answerIsCorrect.value = false
 
-	// const noAdditionalChars = (sanitizedUserAnswer.value.length === sanitizedCorrectAnswer.value.length)
-
 	if (!isWrongAnswer.value) {
 		answerIsCorrect.value = true
 		alternatives.value = null
@@ -120,9 +118,19 @@ function checkCorrectness() {
 }
 
 function checkForSpeaking() {
-  if (props.mode === LEARNING_MODES.SPEAKING) {
-    setTimeout(() => { recordUserSpeech() }, 1000)
+  if (props.mode === LEARNING_MODES.SPEAKING
+  || props.mode === LEARNING_MODES.SPEAKING_LIGHT
+  || props.mode === LEARNING_MODES.SPEAKING_AND_TRANSLATION
+  || props.mode === LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT) {
+    setTimeout(() => { recordUserSpeech() }, 2000)
   }
+}
+
+function skipAssignment() {
+  emit('solved')
+  userAnswer.value = '';
+  answerIsCorrect.value = false;
+  focusOnInput()
 }
 
 watch(() => props.correctAnswer, () => { 
@@ -134,7 +142,7 @@ watch(() => props.correctAnswer, () => {
 <template>
 	<div class="learning-answer">
 		<div class="learning-answer-top">
-      <button class="next-button" @click="emit('solved')">✅</button>
+      <button class="next-button" @click="skipAssignment">✅</button>
 			<div class="input-indicator" :class="completionStatus"></div>
 			<textarea
         class="learning-answer-textarea"

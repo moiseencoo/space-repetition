@@ -3,7 +3,6 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { LEARNING_MODES } from '@/consts/learning-modes'
 import speaker from '@/assets/volume-up.png'
 import flıp from '@/assets/flıp.png'
-import { Module } from 'module';
 
 const props = defineProps({
   assignment: { type: String, required: true },
@@ -61,7 +60,9 @@ const showAnswerWithAssignment = computed(() => {
 
 function checkForSpeaking() {
   if (props.mode === LEARNING_MODES.ACQUAINTANCE
-  || props.mode === LEARNING_MODES.DICTATION) {
+  || props.mode === LEARNING_MODES.DICTATION
+  || props.mode === LEARNING_MODES.ACQUAINTANCE_LIGHT
+  || props.mode === LEARNING_MODES.DICTATION_LIGHT) {
       emit('speak', props.answer)
   }
 }
