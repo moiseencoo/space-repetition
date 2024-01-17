@@ -18,7 +18,7 @@ import { ref, computed, onMounted } from 'vue'
 const studyPlan = ref<TStudyPlan[]>([])
 const currentLangData = turkishData
 
-const currentAssignmentNumber = ref(0)
+const currentAssignmentNumber = ref(30)
 
 const totalDays = currentLangData.length
 
@@ -32,7 +32,6 @@ const currentAssignment = computed((): TStudyPlan | null => {
 })
 
 function handleChangeDay(day: number) {
-  console.log("🚀 ~ handleChangeDay ~ day:", day)
   store.changeDay(day)
   currentAssignmentNumber.value = 0
   createStudyPlan()

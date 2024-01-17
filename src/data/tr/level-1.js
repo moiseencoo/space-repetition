@@ -77,7 +77,7 @@ export default [
     { "Where's your mother? Is she at home?": "Annen nerede? Evde mi?" },
     { "Where are you from?": "Nerelisin?" },
     { "I'm from Canada.": "Ben Kanadalı'yım." },
-    { "What color is your car?": "What color is your car?" },
+    { "What color is your car?": "Araban ne renk?" },
     { "It's red.": "Kırmızı." },
     { "How old is Hassan?": "Hassan kaç yaşında?" },
     { "He's twenty-four (24)": "O yirmi-dört yaşında" },

@@ -3,11 +3,10 @@ import { LEARNING_MODES } from '@/consts/learning-modes'
 
 const STUDY_PLANS = {
   NEW_MATERIAL: [
-    LEARNING_MODES.ACQUAINTANCE,
+    LEARNING_MODES.ACQUAINTANCE_LIGHT,
     LEARNING_MODES.DICTATION_LIGHT,
     LEARNING_MODES.TRANSLATION,
     LEARNING_MODES.SPEAKING_LIGHT,
-    LEARNING_MODES.TRANSLATION_LIGHT, 
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   YESTERDAY: [
@@ -29,7 +28,7 @@ const STUDY_PLANS = {
 }
 
 export const getModeIterations = ({
-  studyPlan, mode, iterationPeriod = 5
+  studyPlan, mode, iterationPeriod = 4
 }: {
   studyPlan: any[], mode: string, iterationPeriod: number
 }) => {
@@ -71,7 +70,7 @@ export const generatePlan = (langData: Record<string, string>[][]) => {
         result.push(... getModeIterations({
           studyPlan: assignments,
           mode,
-          iterationPeriod: 4
+          iterationPeriod: 3
         }))
       }
     })
