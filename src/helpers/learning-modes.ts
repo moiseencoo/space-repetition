@@ -10,7 +10,7 @@ const STUDY_PLANS = {
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   YESTERDAY: [
-    LEARNING_MODES.TRANSLATION,
+    LEARNING_MODES.TRANSLATION_LIGHT,
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   REFRESH1: [
@@ -67,10 +67,12 @@ export const generatePlan = (langData: Record<string, string>[][]) => {
           mode,
         })))
       } else {
+        const iterationPeriod = index > 1 ? 3 : 2
+  
         result.push(... getModeIterations({
           studyPlan: assignments,
           mode,
-          iterationPeriod: 3
+          iterationPeriod
         }))
       }
     })
