@@ -1,21 +1,27 @@
 import type { TStudyPlan } from '@/types/assignments'
 import { LEARNING_MODES } from '@/consts/learning-modes'
 
-const STUDY_PLANS = {
+export const PLAN_LEVELS = {
+  NORMAL: 'normal',
+  LIGHT: 'light',
+} as const
+
+const STUDY_PLAN_NORMAL = {
   NEW_MATERIAL: [
     LEARNING_MODES.ACQUAINTANCE_LIGHT,
     LEARNING_MODES.DICTATION_LIGHT,
-    LEARNING_MODES.TRANSLATION,
     LEARNING_MODES.SPEAKING_LIGHT,
+    LEARNING_MODES.TRANSLATION,
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   YESTERDAY: [
+    LEARNING_MODES.DICTATION_LIGHT,
     LEARNING_MODES.TRANSLATION_LIGHT,
     LEARNING_MODES.SPEAKING_AND_TRANSLATION,
   ],
   REFRESH1: [
     LEARNING_MODES.TRANSLATION_LIGHT,
-    LEARNING_MODES.SPEAKING_AND_TRANSLATION,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
   ],
   REFRESH2: [
     LEARNING_MODES.TRANSLATION_LIGHT,
@@ -23,6 +29,28 @@ const STUDY_PLANS = {
   ],
   REFRESH3: [
     LEARNING_MODES.TRANSLATION_LIGHT,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
+  ]
+}
+
+const STUDY_PLAN_LIGHT = {
+  NEW_MATERIAL: [
+    LEARNING_MODES.DICTATION_LIGHT,
+    LEARNING_MODES.TRANSLATION_LIGHT,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION,
+  ],
+  YESTERDAY: [
+    LEARNING_MODES.DICTATION_LIGHT,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
+  ],
+  REFRESH1: [
+    LEARNING_MODES.TRANSLATION_LIGHT,
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
+  ],
+  REFRESH2: [
+    LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
+  ],
+  REFRESH3: [
     LEARNING_MODES.SPEAKING_AND_TRANSLATION_LIGHT,
   ]
 }
@@ -51,16 +79,23 @@ export const getModeIterations = ({
   }, [])
 }
 
-export const generatePlan = (langData: Record<string, string>[][]) => {
+export const generatePlan = (
+  langData: Record<string, string>[][],
+  planLevel: typeof PLAN_LEVELS[keyof typeof PLAN_LEVELS] = PLAN_LEVELS.NORMAL
+) => {
   const result: TStudyPlan[] = []
-  const studyPlansArray = Object.values(STUDY_PLANS)
+  const studyPlansArray = Object.values(
+    (planLevel === PLAN_LEVELS.NORMAL)
+      ? STUDY_PLAN_NORMAL
+      : STUDY_PLAN_LIGHT
+    )
 
   if (!(Array.isArray(langData) && langData.length)) {
     return result
   }
 
   langData.forEach((assignments, index) => {
-    studyPlansArray[index].forEach(mode => {
+    studyPlansArray[index].forEach((mode: typeof LEARNING_MODES[keyof typeof LEARNING_MODES]) => {
       if (mode.includes('light')) {
         result.push(...assignments.map(assignment => ({
           assignment,
@@ -80,3 +115,6 @@ export const generatePlan = (langData: Record<string, string>[][]) => {
   return result
 }
 
+export const intenceStudyPlan = () => {
+
+}

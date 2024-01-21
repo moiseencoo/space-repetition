@@ -2,23 +2,21 @@
 import LearningArea from '../components/learning-area/index.vue'
 import Progress from '../components/progress/index.vue'
 import { isObjectEmpty } from "@/helpers/common"
-import { generatePlan, PLAN_LEVELS } from '@/helpers/learning-modes'
-import frenchData from '../data/fr/level-1.js'
+import { generatePlan } from '@/helpers/learning-modes'
+// import frenchData from '../data/fr/level-1.js'
 import turkishData from '../data/tr/level-1.js'
-import englishData from '../data/en/level-1.js'
 import { useStore } from '@/stores/store'
 import type { TStudyPlan } from '@/types/assignments'
-import { ref, computed, onMounted, watch } from 'vue'
-import { LANGUAGES } from '@/consts/languages'
-
-type TLandData = Record<string, string>[]
+import { ref, computed, onMounted } from 'vue'
 
 const store = useStore()
 
 const studyPlan = ref<TStudyPlan[]>([])
-const currentLangData = ref<TLandData[]>([])
+const currentLangData = turkishData
 
 const currentAssignmentNumber = ref(0)
+
+const totalDays = currentLangData.length
 
 const currentDay = computed((): number => store.currentDay)
 
@@ -48,63 +46,41 @@ function createStudyPlan() {
   const startIndex = (currentDay.value - 4 >= 0)
   ? currentDay.value - 4
   : 0
-  const endIndex = currentDay.value + 1
+  const endIndex = currentDay.value
 
-  const currentDayData = currentLangData.value.slice(startIndex, endIndex)
- 
-  if (!currentDayData) {
+  const todayAssignment = currentLangData.slice(currentDay.value, currentDay.value + 6).flat()
+  const reviewAssignment = currentLangData.slice(startIndex, endIndex)
+
+  const assignment = currentLangData.reduce((acc: Record<string, string>[][], curr: Record<string, string>[], index: number) => {
+
+  }, [])
+
+  if (!reviewAssignment) {
     console.log('no study plan')
     return
   }
 
-  const languageLevel = store.currentLang === LANGUAGES.EN ? PLAN_LEVELS.LIGHT : PLAN_LEVELS.NORMAL
-  studyPlan.value = generatePlan(currentDayData.reverse(), languageLevel)
+  studyPlan.value = generatePlan(reviewAssignment.reverse())
 }
 
 onMounted(() => {
-  initLearning()
-})
-
-function initLearning() {
   if (!store.currentLangLocalStorageData || isObjectEmpty(store.currentLangLocalStorageData)) {
     store.updateLocalStorage({
       currentDay: 0
     })
   } else {
-    store.changeDay(store.currentLangLocalStorageData.currentDay)
-  }
-
-  switch(store.currentLang) {
-    case LANGUAGES.EN:
-      currentLangData.value = englishData
-      break
-    case LANGUAGES.TR:
-      currentLangData.value = turkishData
-      break
-    case LANGUAGES.FR:
-      currentLangData.value = frenchData
-      break
-    default:
-      currentLangData.value = []
-      break
+    store.changeDay(store.currentLangLocalStorageData.currentDay, false)
   }
 
   createStudyPlan()
-}
-
-watch(
-  () => store.currentLang,
-  () => {
-    initLearning()
-  }
-)
+})
 
 </script>
 
 <template>
   <main>
     <Progress 
-      :totalDays="currentLangData.length" 
+      :totalDays="totalDays" 
       :currentDay="store.currentDay" 
       @changeDay="handleChangeDay"
     />

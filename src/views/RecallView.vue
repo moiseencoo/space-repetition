@@ -1,22 +1,18 @@
 <script setup lang="ts">
 import LearningArea from '../components/learning-area/index.vue'
-import Progress from '../components/progress/index.vue'
 import { isObjectEmpty } from "@/helpers/common"
-import { generatePlan, PLAN_LEVELS } from '@/helpers/learning-modes'
-import frenchData from '../data/fr/level-1.js'
+import { generatePlan } from '@/helpers/learning-modes'
+// import frenchData from '../data/fr/level-1.js'
 import turkishData from '../data/tr/level-1.js'
-import englishData from '../data/en/level-1.js'
 import { useStore } from '@/stores/store'
 import type { TStudyPlan } from '@/types/assignments'
-import { ref, computed, onMounted, watch } from 'vue'
-import { LANGUAGES } from '@/consts/languages'
-
-type TLandData = Record<string, string>[]
+import { ref, computed, onMounted } from 'vue'
+import router from '@/router'
 
 const store = useStore()
 
 const studyPlan = ref<TStudyPlan[]>([])
-const currentLangData = ref<TLandData[]>([])
+const currentLangData = turkishData
 
 const currentAssignmentNumber = ref(0)
 
@@ -30,9 +26,10 @@ const currentAssignment = computed((): TStudyPlan | null => {
 })
 
 function handleChangeDay(day: number) {
-  store.changeDay(day)
-  currentAssignmentNumber.value = 0
-  createStudyPlan()
+  alert('Hurray! You have completed recall!')
+  setTimeout(() => {
+    router.push('/learning')
+  }, 3000)
 }
 
 function handleSolvedAssignment() {
@@ -44,70 +41,35 @@ function handleSolvedAssignment() {
   }
 }
 
-function createStudyPlan() {
+function createRecallPlan() {
   const startIndex = (currentDay.value - 4 >= 0)
   ? currentDay.value - 4
   : 0
   const endIndex = currentDay.value + 1
 
-  const currentDayData = currentLangData.value.slice(startIndex, endIndex)
+  const currentDayData = currentLangData.slice(startIndex, endIndex)
  
   if (!currentDayData) {
     console.log('no study plan')
     return
   }
 
-  const languageLevel = store.currentLang === LANGUAGES.EN ? PLAN_LEVELS.LIGHT : PLAN_LEVELS.NORMAL
-  studyPlan.value = generatePlan(currentDayData.reverse(), languageLevel)
+  studyPlan.value = generatePlan(currentDayData.reverse())
 }
 
 onMounted(() => {
-  initLearning()
-})
-
-function initLearning() {
   if (!store.currentLangLocalStorageData || isObjectEmpty(store.currentLangLocalStorageData)) {
-    store.updateLocalStorage({
-      currentDay: 0
-    })
+    router.push('/learning')
   } else {
-    store.changeDay(store.currentLangLocalStorageData.currentDay)
+    createRecallPlan()
   }
-
-  switch(store.currentLang) {
-    case LANGUAGES.EN:
-      currentLangData.value = englishData
-      break
-    case LANGUAGES.TR:
-      currentLangData.value = turkishData
-      break
-    case LANGUAGES.FR:
-      currentLangData.value = frenchData
-      break
-    default:
-      currentLangData.value = []
-      break
-  }
-
-  createStudyPlan()
-}
-
-watch(
-  () => store.currentLang,
-  () => {
-    initLearning()
-  }
-)
+})
 
 </script>
 
 <template>
   <main>
-    <Progress 
-      :totalDays="currentLangData.length" 
-      :currentDay="store.currentDay" 
-      @changeDay="handleChangeDay"
-    />
+    <div></div>
     <LearningArea 
       v-if="currentAssignment"
       :learningAssignment="currentAssignment.assignment" 

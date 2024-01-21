@@ -3,9 +3,8 @@ import { defineStore } from 'pinia'
 import { LANGUAGES } from '@/consts/languages'
 
 export const useStore = defineStore('store', () => {
-  const currentLang = ref('tr-TR')
+  const currentLang = ref('en-US')
   const currentDay = ref(0)
-  const maxUnclockedDays = ref(1)
 
   const currentLangName = computed(() => {
     return Object.entries(LANGUAGES).map(([key, value]) => {
@@ -25,21 +24,12 @@ export const useStore = defineStore('store', () => {
     currentLang.value = lang
   }
 
-  function changeDay(day: number) {
+  function changeDay(day: number, updateLS = true) {
     currentDay.value = day
-
-    if (day > maxUnclockedDays.value) {
-      maxUnclockedDays.value = maxUnclockedDays.value + 1
-      updateLocalStorage({
-        currentDay: day,
-        maxUnclockedDays: maxUnclockedDays.value,
-      })
-    }
-  }
-
-  function setMaxUnlockedDays(day: number) {
-    maxUnclockedDays.value = day
-    updateLocalStorage({ maxUnclockedDays: day })
+  
+    updateLS && updateLocalStorage({
+      currentDay: day,
+    })
   }
 
   function updateLocalStorage(partToUpdate: Record<string, string | number>) {
@@ -60,8 +50,6 @@ export const useStore = defineStore('store', () => {
     changeLang,
     changeDay,
     currentLangName,
-    setMaxUnlockedDays,
-    maxUnclockedDays,
     currentLangLocalStorageData,
     updateLocalStorage,
   }

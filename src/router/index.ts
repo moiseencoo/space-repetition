@@ -14,6 +14,16 @@ const router = createRouter({
       name: 'learning',
       component: () => import('../views/LearningView.vue')
     },
+    {
+      path: '/recall',
+      name: 'recall',
+      component: () => import('../views/RecallView.vue')
+    },
+    {
+      path: '/learning-intence',
+      name: 'LearningIntence',
+      component: () => import('../views/LearningIntence.vue')
+    },
   ]
 })
 

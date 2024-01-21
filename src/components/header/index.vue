@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { LANGUAGES } from '@/consts/languages'
 import { useStore } from '@/stores/store'
 
 const showPicker = ref(false)
 const store = useStore()
+
+const languages = computed(() => {
+  return Object.entries(LANGUAGES)
+    .map(([key, value]) => ({ key, value}))
+    .filter(lang => lang.value !== store.currentLang)
+})
 
 function handleLanguageChange(lang: string) {
   if (lang === store.currentLang) {
@@ -22,8 +28,14 @@ function handleLanguageChange(lang: string) {
     <div class="lang-picker">
       <span @click="showPicker = !showPicker" class="current-lang">{{ store.currentLangName }}</span>
       <template v-if="showPicker">
-        <ul v-for="(lang, key) in LANGUAGES" class="lang-dropdown">
-          <li @click="handleLanguageChange(lang)">{{ key }}</li>
+        <ul class="lang-dropdown">
+          <li 
+            v-for="lang in languages"
+            class="lang-option"
+            @click="handleLanguageChange(lang.value)"
+          >
+            {{ lang.key }}
+          </li>
         </ul>
       </template>
     </div>
@@ -38,7 +50,7 @@ function handleLanguageChange(lang: string) {
   align-items: center;
   margin: 0 auto;
   padding: 30px 70px 20px;
-  z-index: 1;
+  z-index: 10;
 }
 
 .logo-link {
@@ -76,7 +88,29 @@ function handleLanguageChange(lang: string) {
 }
 
 .current-lang {
+  cursor: pointer;
   font-size: 24px;
   font-weight: 300;
+}
+
+.lang-picker {
+  position: relative;
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.lang-option {
+  cursor: pointer;
+  padding: 8px 4px;
+}
+
+.lang-option:hover {
+  color: var(--app-color-background-light);
 }
 </style>

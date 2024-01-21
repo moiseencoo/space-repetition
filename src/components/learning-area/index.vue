@@ -4,6 +4,8 @@ import LearningAssignment from './learning-assignment.vue'
 import { computed, onMounted, ref } from 'vue'
 import type { PropType } from 'vue'
 import { useStore } from '@/stores/store'
+import { EN } from '@/consts/voices'
+import { LANGUAGES } from '@/consts/languages'
 
 const store = useStore()
 
@@ -40,7 +42,13 @@ function handleSolved(): void {
 
 async function fetchVoices(currentLanguage: string = 'fr-CA') {
   let allVoices = await getVoices()
-  voices.value = allVoices.filter(voice => voice.lang === currentLanguage) ?? null
+  if (currentLanguage === LANGUAGES.EN) {
+    const currentVoice = allVoices.filter(voice => EN.includes(voice.name)) ?? null
+    voices.value = currentVoice
+  } else {
+    voices.value = allVoices.filter(voice => voice.lang === currentLanguage) ?? null
+  }
+
   const utterance = new SpeechSynthesisUtterance()
   utterance.lang = currentLanguage
   currentSpeachSynthesis.value = utterance
