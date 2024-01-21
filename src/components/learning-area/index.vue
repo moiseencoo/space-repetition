@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LearningAnswer from './learning-answer.vue'
 import LearningAssignment from './learning-assignment.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { PropType } from 'vue'
 import { useStore } from '@/stores/store'
 import { EN } from '@/consts/voices'
@@ -86,6 +86,13 @@ function speak(text: string) {
 onMounted(() => {
 	fetchVoices(store.currentLang)
 })
+
+watch(
+  () => store.currentLang,
+  () => {
+    fetchVoices(store.currentLang)
+  }
+)
 
 </script>
 
