@@ -137,6 +137,11 @@ watch(() => props.correctAnswer, () => {
   checkForSpeaking()
 })
 
+watch(() => props.currentLanguage, () => { 
+  speechRecognition.value = createSpeechRecognition(props.currentLanguage)
+})
+
+
 </script>
 
 <template>

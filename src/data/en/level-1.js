@@ -28,7 +28,7 @@ export default [
       { "Почемы ты никогда не моешь посуду после обеда?": "Why do you never wash the dishes after lunch?"},
       { "Каждую субботу она убирает свою комнату": "She cleans her room every Saturday"},
       { "Вы всегда валяете дурака на работе?": "Do you always play the fool at work?"},
-      { "Они не моют посуду по вечерам, потому что довольно часто ужинают в ресторане": "They never wash the dishes in the evenings, bacause they have supper at the restaurant fairly often"},
+      { "Они не моют посуду по вечерам, потому что довольно часто ужинают в ресторане": "They never wash the dishes in the evenings, because they have supper at the restaurant fairly often"},
       { "Ему никогда не бывает холодно по утрам ": "He is never cold in the mornings, because he always goes to work on foot"},
       { "По будням мы обычно очень заняты, так как ходим на работу.": "We are usually very busy on weekdays as we go to work"},
       { "Почему он всегда такой грустный по воскресеньям?": "Why is he always so sad on Sundays?"},
