@@ -244,7 +244,7 @@ watch(() => props.currentLanguage, () => {
 	margin-left: 30px;
 	margin-top: 15px;
 	width: 100%;
-	height: 60px;
+	height: 120px;
 	border: 0;
 	outline: none;
 	border-color: transparent;

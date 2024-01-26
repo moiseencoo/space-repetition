@@ -19,6 +19,7 @@ const studyPlan = ref<TStudyPlan[]>([])
 const currentLangData = ref<TLandData[]>([])
 
 const currentAssignmentNumber = ref(0)
+const isIntenceMode = ref(false)
 
 const currentDay = computed((): number => store.currentDay)
 
@@ -32,6 +33,11 @@ const currentAssignment = computed((): TStudyPlan | null => {
 function handleChangeDay(day: number) {
   store.changeDay(day)
   currentAssignmentNumber.value = 0
+  createStudyPlan()
+}
+
+function handleIntenceModeChange(mode: boolean) {
+  isIntenceMode.value = mode
   createStudyPlan()
 }
 
@@ -115,6 +121,8 @@ watch(
       :totalAssignmentsNumber="studyPlan.length"
       :currentAssignmentNumber="currentAssignmentNumber"
       :mode="currentAssignment.mode"
+      :isIntenceMode="isIntenceMode"
+      @intenceToggle="handleIntenceModeChange"
       @solved="handleSolvedAssignment"
     />
     <div>

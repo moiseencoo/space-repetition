@@ -122,7 +122,7 @@ onMounted(() => {
 
 .learning-assignment-value {
   position: relative;
-  font-size: 30px;
+  font-size: 28px;
   margin-top: 50px;
   margin-left: 53px;
 }

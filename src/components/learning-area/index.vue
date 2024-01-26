@@ -15,9 +15,10 @@ const props = defineProps({
   totalAssignmentsNumber: { type: Number, default: 0 },
   currentAssignmentNumber: { type: Number, default: 0 },
   mode: { type: String, required: true },
+  isIntenceMode: { type: Boolean, required: true },
 })
 
-const emit = defineEmits(['solved'])
+const emit = defineEmits(['solved', 'intenceToggle'])
 
 const voices = ref<Record<string, any>[] | null>(null)
 const currentSpeachSynthesis = ref()
@@ -99,8 +100,9 @@ watch(
 <template>
 	<div class="learning-area">
     <div>
-      <label for="rate">Rate:</label>
-      <input type="range" min="0.5" max="2" v-model="rate" step="0.1" id="rate" />
+      <label for="rate">Rate:
+        <input type="range" min="0.5" max="2" v-model="rate" step="0.1" id="rate" />
+      </label>
     </div>
 		<LearningAssignment
       :assignment="assignmentValue"
@@ -112,6 +114,9 @@ watch(
     <div class="learning-progress">
       {{ props.currentAssignmentNumber + 1 }} / {{  props.totalAssignmentsNumber }}
     </div>
+    <label for="isIntenceMode" class="intence-mode">Intence Mode:
+      <input type="checkbox" :value="isIntenceMode" id="isIntenceMode" @click="emit('intenceToggle', !isIntenceMode)"/>
+    </label>
     <LearningAnswer
       :currentLanguage="currentLanguage"
       :correctAnswer="answerValue"
@@ -132,6 +137,11 @@ watch(
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.intence-mode {
+  margin-top: -16px;
+  margin-right: auto;
 }
 
 .learning-progress {

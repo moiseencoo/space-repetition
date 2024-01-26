@@ -43,8 +43,8 @@ export default [
       { "Потому что это скучно": "Because it's boring"},
       { "Он всегда счастлив, когда валяет дурака.": "He is always happy when he plays the fool"},
       { "Она очень взволнованна, потому что не видит выхода из положения": "She is very excited, because she doesn't see daylight"},
-      { "Он слишком самоуверен и довольно глуп, поэтому он часто выходит из себя": "He is too smug and rather silly, that;s why he often loses his temper"},
-      { "По утрам она обычно очень занята: она всегда принимает душ, стелит постель, готовит завтрак, завтракает, моет посуду, убирает комнату, причесывается, наводит красоту, одевается": "She is usually very busy in the morning. She always takes a shower, makes the bed, makes breakfast, has breakfast, does her hair, beuatifies herself, gets dressed."},
+      { "Он слишком самоуверен и довольно глуп, поэтому он часто выходит из себя": "He is too smug and rather silly, that's why he often loses his temper"},
+      { "По утрам она обычно очень занята: она всегда принимает душ, стелит постель, готовит завтрак, завтракает, причесывается, наводит красоту, одевается": "She is usually very busy in the morning. She always takes a shower, makes the bed, makes breakfast, has breakfast, does her hair, beautifies herself, gets dressed."},
       { "Обычно она едет на работу на автобусе, а иногда на такси.": "She usually goes to work by bus, but sometimes she takes a taxi"},
     ],
     [
