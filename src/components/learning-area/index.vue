@@ -38,7 +38,12 @@ const currentProgress = computed((): number => {
 
 function handleSolved(): void {
   speak(answerValue.value)
-  setTimeout(() => { emit('solved') }, 1500)
+  const interval = setInterval(() => {
+    if (!speechSynthesis.speaking) {
+      emit('solved')
+      clearInterval(interval)
+    }
+  }, 1000)
 }
 
 async function fetchVoices(currentLanguage: string = 'fr-CA') {

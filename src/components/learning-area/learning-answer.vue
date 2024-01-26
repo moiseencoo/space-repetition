@@ -106,12 +106,6 @@ function checkCorrectness() {
     completionStatus.value = completionStatuses.SOLVED
 
 		emit('solved')
-
-		setTimeout(() => {
-			userAnswer.value = '';
-			answerIsCorrect.value = false;
-      focusOnInput()
-		}, 1000)
 	} else {
     completionStatus.value = completionStatuses.ERROR
   }
@@ -135,6 +129,9 @@ function skipAssignment() {
 
 watch(() => props.correctAnswer, () => { 
   checkForSpeaking()
+  userAnswer.value = '';
+  answerIsCorrect.value = false;
+  focusOnInput()
 })
 
 watch(() => props.currentLanguage, () => { 
