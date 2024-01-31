@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/learning',
+      path: '/learning/:lang',
       name: 'learning',
       component: () => import('../views/LearningView.vue')
     },

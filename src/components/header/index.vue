@@ -13,11 +13,10 @@ const languages = computed(() => {
 })
 
 function handleLanguageChange(lang: string) {
-  if (lang === store.currentLang) {
-    showPicker.value = false
-  } else {
+  if (lang !== store.currentLang) {
     store.changeLang(lang)
   }
+  showPicker.value = false
 }
 
 </script>

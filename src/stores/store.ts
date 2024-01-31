@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { LANGUAGES } from '@/consts/languages'
+import router from '@/router'
 
 export const useStore = defineStore('store', () => {
   const currentLang = ref('en-US')
@@ -20,7 +21,8 @@ export const useStore = defineStore('store', () => {
     }
   })
 
-  function changeLang(lang: string) {
+  async function changeLang(lang: string) {
+    await router.push({ path: `/learning/${lang}` })
     currentLang.value = lang
   }
 

@@ -10,6 +10,7 @@ import { useStore } from '@/stores/store'
 import type { TStudyPlan } from '@/types/assignments'
 import { ref, computed, onMounted, watch } from 'vue'
 import { LANGUAGES } from '@/consts/languages'
+import router from '@/router'
 
 type TLandData = Record<string, string>[]
 
@@ -72,6 +73,11 @@ onMounted(() => {
 })
 
 function initLearning() {
+  const paramsLang = router.currentRoute.value.params.lang as string
+  if (paramsLang !== store.currentLang) {
+    store.changeLang(paramsLang)
+  }
+
   if (!store.currentLangLocalStorageData || isObjectEmpty(store.currentLangLocalStorageData)) {
     store.updateLocalStorage({
       currentDay: 0
@@ -116,8 +122,7 @@ watch(
     />
     <LearningArea 
       v-if="currentAssignment"
-      :learningAssignment="currentAssignment.assignment" 
-      :currentLanguage="store.currentLang"
+      :learningAssignment="currentAssignment.assignment"
       :totalAssignmentsNumber="studyPlan.length"
       :currentAssignmentNumber="currentAssignmentNumber"
       :mode="currentAssignment.mode"

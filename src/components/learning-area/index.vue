@@ -11,7 +11,6 @@ const store = useStore()
 
 const props = defineProps({
   learningAssignment: { type: Object as PropType<Record<string, string>>, required: true },
-  currentLanguage: { type: String, default: 'fr-CA' },
   totalAssignmentsNumber: { type: Number, default: 0 },
   currentAssignmentNumber: { type: Number, default: 0 },
   mode: { type: String, required: true },
@@ -23,6 +22,8 @@ const emit = defineEmits(['solved', 'intenceToggle'])
 const voices = ref<Record<string, any>[] | null>(null)
 const currentSpeachSynthesis = ref()
 const rate = ref("1")
+const loadingSpeechRecognition = ref(false)
+
 
 const assignmentValue = computed((): string => {
   return Object.keys(props.learningAssignment)[0]
@@ -47,6 +48,10 @@ function handleSolved(): void {
 }
 
 async function fetchVoices(currentLanguage: string = 'fr-CA') {
+  if (currentSpeachSynthesis.value?.utterance?.lang === currentLanguage) {
+    return
+  }
+
   let allVoices = await getVoices()
   if (currentLanguage === LANGUAGES.EN) {
     const currentVoice = allVoices.filter(voice => EN.includes(voice.name)) ?? null
@@ -58,6 +63,7 @@ async function fetchVoices(currentLanguage: string = 'fr-CA') {
   const utterance = new SpeechSynthesisUtterance()
   utterance.lang = currentLanguage
   currentSpeachSynthesis.value = utterance
+  loadingSpeechRecognition.value = false
 }
 
 function getVoices(): Promise<Record<string, any>[]> {
@@ -90,12 +96,13 @@ function speak(text: string) {
 }
 
 onMounted(() => {
-	fetchVoices(store.currentLang)
+  fetchVoices(store.currentLang)
 })
 
 watch(
   () => store.currentLang,
   () => {
+    loadingSpeechRecognition.value = true
     fetchVoices(store.currentLang)
   }
 )
@@ -110,6 +117,7 @@ watch(
       </label>
     </div>
 		<LearningAssignment
+      v-if="!loadingSpeechRecognition"
       :assignment="assignmentValue"
       :answer="answerValue"
       :progressPercent="currentProgress"
@@ -123,7 +131,7 @@ watch(
       <input type="checkbox" :value="isIntenceMode" id="isIntenceMode" @click="emit('intenceToggle', !isIntenceMode)"/>
     </label>
     <LearningAnswer
-      :currentLanguage="currentLanguage"
+      :currentLanguage="store.currentLang"
       :correctAnswer="answerValue"
       :mode="mode"
       @solved="handleSolved" 
